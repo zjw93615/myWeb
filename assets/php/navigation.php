@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Jiawei Web</a>
+          <a class="navbar-brand" href=<?php echo "'".$path['url']."'" ?>>Jiawei Web</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">

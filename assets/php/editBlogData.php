@@ -1,26 +1,5 @@
 <?php
-  function get_first_blog_class($dbc) {
-    $q = "SELECT * FROM BlogClass ORDER BY className LIMIT 1";
-    $r = mysqli_query($dbc, $q);
-    $data = mysqli_fetch_assoc($r);
-
-    return $data;
-  }
-  function get_blog_class_by_name($dbc, $name) {
-    $q = "SELECT * FROM BlogClass WHERE className = '".$name."'";
-    $r = mysqli_query($dbc, $q);
-    $data = mysqli_fetch_assoc($r);
-
-    return $data;
-  }
-  function get_blog_class_by_id($dbc, $id) {
-    $q = "SELECT * FROM BlogClass WHERE id = ".$id;
-    $r = mysqli_query($dbc, $q);
-    $data = mysqli_fetch_assoc($r);
-
-    return $data;
-  }
-  function get_blog_class($path, $dbc) {
+  function edit_blog_class($path, $dbc) {
     $q = "SELECT * FROM BlogClass ORDER BY className";
     $r = mysqli_query($dbc, $q);
     if(!isset($path['call_parts'][1]) || $path['call_parts'][1] == '') {
@@ -29,26 +8,27 @@
     $result = '';
     while($data = mysqli_fetch_assoc($r)) {
       if($path['call_parts'][1] == $data['className']) {
-        $result .= '<li class="active"><a href="'.$path['url'].'blog/'.$data['className'].'/">';
+        $result .= '<li class="active"><a class="col-sm-10" href="'.$path['url'].$path['call_parts'][0].'/'.$data['className'].'/">';
       }else {
-        $result .= '<li><a href="'.$path['url'].'blog/'.$data['className'].'/">';
+        $result .= '<li><a class="col-sm-10" href="'.$path['url'].$path['call_parts'][0].'/'.$data['className'].'/">';
       }
 
       $result .= $data['className'];
-      $result .= '</a></li>';
+      $result .= '</a><div class="btn-group-vertical" id="trash" role="group"><button id="'.$data['className'].'" type="button" class="btn btn-default edit_class"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button id="'.$data['className'].'" type="button" class="btn btn-default delete_class"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div></li>';
     }
+    $result .= '<button type="button" class="btn btn-default col-sm-10 col-sm-offset-1"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>';
     return $result;
   }
 
-  function blog_display($path, $dbc) {
+  function edit_blog_display($path, $dbc) {
     if(isset($path['call_parts'][2]) && $path['call_parts'][2] != '') {
-      return get_blog_content($path, $dbc);
+      return edit_blog_content($path, $dbc);
     }else {
-      return get_blog_list($path, $dbc);
+      return edit_blog_list($path, $dbc);
     }
   }
 
-  function get_blog_list($path, $dbc) {
+  function edit_blog_list($path, $dbc) {
 
     if(!isset($path['call_parts'][1]) || $path['call_parts'][1] == '') {
       $path['call_parts'][1] = 'Algorithm';
@@ -73,14 +53,15 @@
     return $result;
   }
 
-  function get_blog_content($path, $dbc) {
+  function edit_blog_content($path, $dbc) {
     $q = "SELECT * FROM Blog WHERE id = '".$path['call_parts'][2]."'";
     $r = mysqli_query($dbc, $q);
     $data = mysqli_fetch_assoc($r);
     $result = '
     <div class="blog-header col-sm-12">
-      <h1 class="blog-title">'.$data['title'].'</h1>
-      <p class="lead blog-description">'.$data['abstract'].'</p>
+      <h1 class="blog-title col-sm-10">'.$data['title'].'</h1>
+      <div class="btn-group-vertical col-sm-1" id="trash" role="group"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div>
+      <p class="lead blog-description col-sm-12">'.$data['abstract'].'</p>
     </div>';
     $result .= '<div class="blog-post col-sm-12">';
     $result .= '<p class="blog-post-meta">'.$data['dateTime'].'</p>';
@@ -93,12 +74,12 @@
       $result .= '<p>'.$data['text'].'</p>';
     }
     $result .= '</div><!-- /.blog-post -->';
-    $result .= add_comment($path,$dbc);
+    $result .= edit_comment($path,$dbc);
     return $result;
 
   }
 
-  function add_comment_form($path) {
+  function edit_comment_form($path) {
 
     $result = '<script src="'.$path['url'].'assets/ckeditor/ckeditor.js"></script>';
     $result .= '<form action="' .$_SERVER['REQUEST_URI']. '" method="post" role="form" class="form-horizontal" id="commentForm">
@@ -120,14 +101,14 @@
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-11">
-                      <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                      <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Edit comment</button>
                     </div>
                   </div>
                 </form>';
     return $result;
   }
 
-  function add_comment($path, $dbc) {
+  function edit_comment($path, $dbc) {
     $result = '
       <div class="col-sm-12" id="logout">
         <div class="page-header">
@@ -136,7 +117,6 @@
         <div class="comment-tabs">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
-                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Add comment</h4></a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="comments-logout">
@@ -147,7 +127,7 @@
 
     while($data = mysqli_fetch_assoc($r)) {
       $result .= '<li class="media">';
-
+      $result .= '<div class="col-sm-10">';
       $result .= '<a class="pull-left" href="#">
                     <img class="media-object img-circle" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile">
                   </a>';
@@ -159,13 +139,10 @@
       $result .= $data['text'];
       $result .= '</div>';
 
-      $result .= '</div></div></li>';
+      $result .= '</div></div></div><div class="btn-group-vertical col-sm-1" id="trash" role="group"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></div></li>';
     }
 
     $result .= '</ul></div>';
-    $result .= '<div class="tab-pane" id="add-comment">';
-    $result .= add_comment_form($path);
-    $result .= '</div>';
     return $result;
 
 

@@ -37,6 +37,7 @@ include('assets/php/blogData.php');
     <![endif]-->
 
     <!-- My php script -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
     <!-- Custom styles for this template -->
@@ -52,13 +53,6 @@ include('assets/php/blogData.php');
         <?php getPageData($path,$dbc); ?>
     </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!--
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    -->
-    <script>window.jQuery || document.write('<script src=<?php echo $path['url']."assets/js/vendor/jquery.min.js" ?>><\/script>')</script>
     <script src=<?php echo $path['url']."assets/js/bootstrap.min.js" ?>></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!-- <script src="assets/js/vendor/holder.min.js"></script> -->
