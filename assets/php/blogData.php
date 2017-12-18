@@ -55,7 +55,7 @@
     }
     $blogClass = get_blog_class_by_name($dbc,$path['call_parts'][1]);
 
-    $q = "SELECT * FROM Blog WHERE BlogClass_id = '".$blogClass['id']."'";
+    $q = "SELECT * FROM blog WHERE BlogClass_id = '".$blogClass['id']."'";
     $r = mysqli_query($dbc, $q);
 
     $result = '<h1 class="page-header">'.$path['call_parts'][1].'</h1>';
