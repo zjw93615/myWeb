@@ -1,27 +1,27 @@
 <?php
   function get_first_blog_class($dbc) {
-    $q = "SELECT * FROM BlogClass ORDER BY className LIMIT 1";
+    $q = "SELECT * FROM blogclass ORDER BY className LIMIT 1";
     $r = mysqli_query($dbc, $q);
     $data = mysqli_fetch_assoc($r);
 
     return $data;
   }
   function get_blog_class_by_name($dbc, $name) {
-    $q = "SELECT * FROM BlogClass WHERE className = '".$name."'";
+    $q = "SELECT * FROM blogclass WHERE className = '".$name."'";
     $r = mysqli_query($dbc, $q);
     $data = mysqli_fetch_assoc($r);
 
     return $data;
   }
   function get_blog_class_by_id($dbc, $id) {
-    $q = "SELECT * FROM BlogClass WHERE id = ".$id;
+    $q = "SELECT * FROM blogclass WHERE id = ".$id;
     $r = mysqli_query($dbc, $q);
     $data = mysqli_fetch_assoc($r);
 
     return $data;
   }
   function get_blog_class($path, $dbc) {
-    $q = "SELECT * FROM BlogClass ORDER BY className";
+    $q = "SELECT * FROM blogclass ORDER BY className";
     $r = mysqli_query($dbc, $q);
     if(!isset($path['call_parts'][1]) || $path['call_parts'][1] == '') {
       $path['call_parts'][1] = 'Algorithm';
@@ -74,7 +74,7 @@
   }
 
   function get_blog_content($path, $dbc) {
-    $q = "SELECT * FROM Blog WHERE id = '".$path['call_parts'][2]."'";
+    $q = "SELECT * FROM blog WHERE id = '".$path['call_parts'][2]."'";
     $r = mysqli_query($dbc, $q);
     $data = mysqli_fetch_assoc($r);
     $result = '

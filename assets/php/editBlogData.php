@@ -1,6 +1,6 @@
 <?php
   function edit_blog_class($path, $dbc) {
-    $q = "SELECT * FROM BlogClass ORDER BY className";
+    $q = "SELECT * FROM blogclass ORDER BY className";
     $r = mysqli_query($dbc, $q);
     if(!isset($path['call_parts'][1]) || $path['call_parts'][1] == '') {
       $path['call_parts'][1] = 'Algorithm';
@@ -35,7 +35,7 @@
     }
     $blogClass = get_blog_class_by_name($dbc,$path['call_parts'][1]);
 
-    $q = "SELECT * FROM Blog WHERE BlogClass_id = '".$blogClass['id']."'";
+    $q = "SELECT * FROM blog WHERE BlogClass_id = '".$blogClass['id']."'";
     $r = mysqli_query($dbc, $q);
 
     $result = '<h1 class="page-header">'.$path['call_parts'][1].'</h1>';
@@ -54,7 +54,7 @@
   }
 
   function edit_blog_content($path, $dbc) {
-    $q = "SELECT * FROM Blog WHERE id = '".$path['call_parts'][2]."'";
+    $q = "SELECT * FROM blog WHERE id = '".$path['call_parts'][2]."'";
     $r = mysqli_query($dbc, $q);
     $data = mysqli_fetch_assoc($r);
     $result = '
