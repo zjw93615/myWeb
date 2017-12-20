@@ -37,9 +37,19 @@
                       <li><a href="'.$path['url'].'blog/'.get_first_blog_class($dbc)['className'].'/">Blog</a></li>
                       <li><a href="project">Project</a></li>
                       <li class="active"><a href="about">About</a></li>';
+              }else if($path['call_parts'][0] == 'edit') {
+                echo '<li><a href="'.$path['url'].'">Home</a></li>
+                      <li><a href="'.$path['url'].'blog/'.get_first_blog_class($dbc)['className'].'/">Blog</a></li>
+                      <li><a href="project">Project</a></li>
+                      <li><a href="about">About</a></li>';
               }
             ?>
           </ul>
+          <?php
+            if($path['call_parts'][0] == 'edit') {
+              echo '<form action="'.$path['url'].'edit/" method="post" role="form" class="navbar-form navbar-right"><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></form>';
+            }
+          ?>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
